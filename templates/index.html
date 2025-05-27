@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phobia Detection & Support</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <h1>PhobiaSupport</h1>
+            </div>
+            <p class="subtitle">Understanding and managing your fears with AI-powered insights</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="input-card">
+                    <h2><i class="fas fa-edit"></i> Describe Your Fear</h2>
+                    <p class="description">
+                        Share a detailed description of what makes you anxious or fearful. 
+                        The more specific you are, the better we can help identify and understand your concerns.
+                    </p>
+                    
+                    <form id="phobiaForm">
+                        <div class="textarea-container">
+                            <textarea 
+                                id="fearDescription" 
+                                placeholder="For example: I feel extremely anxious when I have to speak in front of a group of people. My heart races, I start sweating, and I often avoid situations where I might have to present or speak publicly..."
+                                rows="6"
+                                maxlength="1000"
+                            ></textarea>
+                            <div class="char-count">
+                                <span id="charCount">0</span>/1000
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="analyzeBtn" class="analyze-btn">
+                            <i class="fas fa-search"></i>
+                            Analyze My Fear
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-card">
+                    <div class="spinner"></div>
+                    <p>Analyzing your description...</p>
+                    <small>This may take a few moments</small>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-grid">
+                    <!-- Phobia Identification -->
+                    <div class="result-card identification-card">
+                        <div class="card-header">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Identification</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="phobia-name">
+                                <h4 id="phobiaName">-</h4>
+                                <p id="commonName" class="common-name">-</p>
+                            </div>
+                            <p id="phobiaDescription" class="description-text">-</p>
+                            <div class="severity-badge">
+                                <span id="severityLevel">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms -->
+                    <div class="result-card symptoms-card">
+                        <div class="card-header">
+                            <i class="fas fa-stethoscope"></i>
+                            <h3>Common Symptoms</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul id="symptomsList" class="symptoms-list">
+                                <!-- Symptoms will be populated here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Coping Strategies -->
+                    <div class="result-card coping-card">
+                        <div class="card-header">
+                            <i class="fas fa-tools"></i>
+                            <h3>Coping Strategies</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul id="copingList" class="coping-list">
+                                <!-- Coping strategies will be populated here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Professional Help -->
+                    <div class="result-card help-card">
+                        <div class="card-header">
+                            <i class="fas fa-user-md"></i>
+                            <h3>Professional Support</h3>
+                        </div>
+                        <div class="card-content">
+                            <p id="professionalHelp" class="help-text">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Resources -->
+                    <div class="result-card resources-card">
+                        <div class="card-header">
+                            <i class="fas fa-book"></i>
+                            <h3>Helpful Resources</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul id="resourcesList" class="resources-list">
+                                <!-- Resources will be populated here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Level -->
+                    <div class="result-card confidence-card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Analysis Confidence</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="confidence-meter">
+                                <div class="confidence-bar">
+                                    <div id="confidenceLevel" class="confidence-fill"></div>
+                                </div>
+                                <span id="confidenceText">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="newAnalysisBtn" class="secondary-btn">
+                        <i class="fas fa-redo"></i>
+                        New Analysis
+                    </button>
+                    <button id="shareBtn" class="secondary-btn">
+                        <i class="fas fa-share"></i>
+                        Share Results
+                    </button>
+                </div>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Something went wrong</h3>
+                    <p id="errorMessage">-</p>
+                    <button id="retryBtn" class="retry-btn">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="disclaimer">
+                <i class="fas fa-info-circle"></i>
+                <p>
+                    <strong>Disclaimer:</strong> This tool provides general information and should not replace professional medical advice. 
+                    If you're experiencing significant distress, please consult with a qualified mental health professional.
+                </p>
+            </div>
+            <div class="footer-links">
+                <a href="#" onclick="showPrivacyInfo()">Privacy</a>
+                <a href="#" onclick="showContactInfo()">Contact</a>
+                <a href="#" onclick="showAboutInfo()">About</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals for additional info -->
+    <div id="infoModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
